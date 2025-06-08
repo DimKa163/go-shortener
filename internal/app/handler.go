@@ -31,14 +31,16 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		body := []byte(fmt.Sprintf("http://%s/%s", r.Host, shortURL))
+
+		w.Header().Set("Content-Type", "text/plain")
+		w.Header().Set("Content-Length", strconv.Itoa(len(body)))
+		w.WriteHeader(http.StatusCreated)
 		_, err = w.Write(body)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		w.Header().Set("Content-Type", "text/plain")
-		w.Header().Set("Content-Length", strconv.Itoa(len(body)))
-		w.WriteHeader(http.StatusCreated)
+		return
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
