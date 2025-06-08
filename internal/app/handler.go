@@ -11,7 +11,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		path := r.URL.Path
-		value, err := GetUrl(path)
+		value, err := GetURL(path)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -25,19 +25,20 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		shortUrl, err := CreateShortUrl(string(url), 5)
+		shortURL, err := CreateShortURL(string(url), 5)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		body := []byte(fmt.Sprintf("http://%s/%s", r.Host, shortUrl))
+		body := []byte(fmt.Sprintf("http://%s/%s", r.Host, shortURL))
 		_, err = w.Write(body)
 		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		w.WriteHeader(http.StatusCreated)
 		w.Header().Set("Content-Type", "text/plain")
 		w.Header().Set("Content-Length", strconv.Itoa(len(body)))
+		w.WriteHeader(http.StatusCreated)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}

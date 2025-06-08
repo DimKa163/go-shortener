@@ -10,7 +10,7 @@ const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 var store = store2.NewMemoryStore()
 
-func CreateShortUrl(url string, length int) (string, error) {
+func CreateShortURL(url string, length int) (string, error) {
 	b := make([]byte, length)
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]
@@ -23,6 +23,6 @@ func CreateShortUrl(url string, length int) (string, error) {
 	return key, nil
 }
 
-func GetUrl(key string) (string, error) {
+func GetURL(key string) (string, error) {
 	return store.Get(key)
 }
